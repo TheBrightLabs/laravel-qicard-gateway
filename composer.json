@@ -1,0 +1,19 @@
+{
+    "name": "thebrightlabs/iraq-payments",
+    "description": "Laravel package for QI Card and other Iraqi payment gateways",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Thebrightlabs\\IraqPayments\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "00bx",
+            "email": "zamanagha68@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}
