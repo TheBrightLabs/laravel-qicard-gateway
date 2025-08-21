@@ -24,6 +24,11 @@ class QiCardServiceProvider extends ServiceProvider
             __DIR__ . '/../config/qi_card.php' => config_path('qi_card.php'),
         ], 'config');
 
+        // Allow publishing migrations to the main app
+        $this->publishes([
+            __DIR__ . '/../database/migrations/' => database_path('migrations'),
+        ], 'migrations');
+
         // Load package migrations
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
