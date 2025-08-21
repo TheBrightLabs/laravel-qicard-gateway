@@ -19,7 +19,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Thebrightlabs\\IraqPayments\\IraqPaymentsServiceProvider"
+                "Thebrightlabs\\IraqPayments\\QiCardServiceProvider"
             ]
         }
     }
