@@ -44,7 +44,7 @@ class QiCardGateway
     {
         // very basic status check
         $apiHost = $this->getApiHost();
-        $url =  $apiHost = $this->getApiHost() . "/payments/{$paymentId}";
+        $url = $this->getApiHost() . "/payment/{$paymentId}/status";
         $username = $this->getUsername();
         $password = $this->getPassword();
 
