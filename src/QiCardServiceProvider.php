@@ -29,6 +29,11 @@ class QiCardServiceProvider extends ServiceProvider
             __DIR__ . '/../database/migrations/' => database_path('migrations'),
         ], 'migrations');
 
+        //  publish seeders
+        $this->publishes([
+            __DIR__.'/../database/seeders/' => database_path('seeders'),
+        ], 'seeders');
+
         // Load package migrations
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }

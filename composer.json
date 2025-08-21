@@ -5,7 +5,8 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Thebrightlabs\\IraqPayments\\": "src/"
+            "Thebrightlabs\\IraqPayments\\": "src/",
+            "Thebrightlabs\\IraqPayments\\Seeders\\": "database/seeders/"
         }
     },
     "authors": [
