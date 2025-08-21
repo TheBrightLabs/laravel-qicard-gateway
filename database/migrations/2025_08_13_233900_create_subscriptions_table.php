@@ -17,7 +17,7 @@ return new class extends Migration {
                 ->constrained('plans');
             $table->decimal('amount', 12, 3);
             $table->string('currency')->default('IQD');
-            $table->string('gateway')->default('MyFatoorah');
+            $table->string('gateway')->default('QiCard');
             $table->string('payment_method')->default('QICard');
 
             $table->string('invoice_id')->nullable();

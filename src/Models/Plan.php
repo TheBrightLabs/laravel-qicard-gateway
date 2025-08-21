@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Plan extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'type',
+        'price',
+        'features',
+        'is_active',
+        'order',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'price' => 'decimal:3',
+            'is_active' => 'boolean',
+        ];
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(Subscription::class);
+    }
+}
