@@ -3,7 +3,7 @@
 namespace Thebrightlabs\IraqPayments;
 
 use Illuminate\Support\ServiceProvider;
-class QiCardServiceProvider
+class QiCardServiceProvider extends ServiceProvider
 {
 
     public function register()
