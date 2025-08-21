@@ -12,7 +12,6 @@ class QiCardServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/../config/qi_card.php', 'qi_card'
         );
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->app->singleton(QiCardGateway::class,function ($app){
             return new QiCardGateway();
         });
@@ -20,8 +19,12 @@ class QiCardServiceProvider extends ServiceProvider
 
     public function boot()
     {
+        // load package config
         $this->publishes([
             __DIR__ . '/../config/qi_card.php' => config_path('qi_card.php'),
         ], 'config');
+
+        // Load package migrations
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
     }
 }
