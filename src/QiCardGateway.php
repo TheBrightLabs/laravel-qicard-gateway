@@ -3,42 +3,13 @@
 namespace Thebrightlabs\IraqPayments;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use Thebrightlabs\IraqPayments\Traits\withQiCardConfigs;
 
 class QiCardGateway
 {
     // Bismillah.
-
-    protected $config;
-
-    public function __construct()
-    {
-        $this->config = config('qi_card');
-    }
-
-    public function getTerminalId()
-    {
-        $mode = $this->config['mode'];
-        return $this->config[$mode]['terminal_id'];
-    }
-
-
-    public function getUsername()
-    {
-        $mode = $this->config['mode'];
-        return $this->config[$mode]['username'];
-    }
-
-    public function getPassword()
-    {
-        $mode = $this->config['mode'];
-        return $this->config[$mode]['password'];
-    }
-
-    public function getApiHost()
-    {
-        $mode = $this->config['mode'];
-        return $this->config[$mode]['api_host'];
-    }
+    use withQiCardConfigs;
 
     public function checkStatus(string $paymentId)
     {
@@ -48,13 +19,47 @@ class QiCardGateway
         $username = $this->getUsername();
         $password = $this->getPassword();
 
-        $response =  Http::withBasicAuth($username, $password)
+        $response = Http::withBasicAuth($username, $password)
             ->withHeaders([
                 'X-Terminal-Id' => $this->getTerminalId(),
-                'Accept'        => 'application/json',
+                'Accept' => 'application/json',
             ])
             ->get($url);
 
         return $response->json();
+    }
+
+    public function makeSubscription(array $data)
+    {
+        $apiHost = $this->getApiHost();
+        $username = $this->getUsername();
+        $password = $this->getPassword();
+        $terminalId = $this->getTerminalId();
+
+        $payload = [
+            'amount' => $data['amount'],
+            'currency' => $data['currency'] ? "IQD" : '',
+            'description' => $data['description'],
+            'customer' => [
+                'name' => $data['customer_name'],
+                'email' => $data['customer_email'],
+            ],
+            'requestId' => (string)Str::uuid(),
+            'callbackUrl' => $data['callbackUrl'], // or your own callback URL
+            'additionalInfo' => [
+                'plan_id' => $data['plan_id'],
+                'user_id' => $data['user_id'],
+            ],
+        ];
+
+        $response = Http::withBasicAuth($username, $password)
+            ->withHeaders([
+                'X-Terminal-Id' => $terminalId,
+                'Accept' => 'application/json',
+            ])
+            ->post($apiHost . '/payment', $payload);
+
+        return $response->json();
+
     }
 }

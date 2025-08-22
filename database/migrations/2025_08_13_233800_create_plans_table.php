@@ -9,11 +9,12 @@ return new class extends Migration {
     {
         Schema::create('plans', function (Blueprint $table) {
             $table->id();
+            $table->text("description");
             $table->string('name');
             $table->string('slug')->unique();
             $table->string('type');
             $table->decimal('price', 12, 3);
-            $table->text('features');
+            $table->json('features');
             $table->boolean('is_active')->default(true);
             $table->integer('order')->default(0);
             $table->timestamps();
