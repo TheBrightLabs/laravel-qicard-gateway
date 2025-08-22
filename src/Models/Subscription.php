@@ -11,6 +11,8 @@ class Subscription extends Model
 {
     use HasFactory;
 
+    protected $table = "subscriptions";
+
     protected $fillable = [
         'user_id',
         'plan_id',
@@ -20,7 +22,7 @@ class Subscription extends Model
         'payment_method',
         'invoice_id',
         'invoice_url',
-        'transaction_id',
+        'payment_id',
         'start_date',
         'end_date',
         'status',

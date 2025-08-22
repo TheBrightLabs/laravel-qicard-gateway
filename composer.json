@@ -6,7 +6,7 @@
     "autoload": {
         "psr-4": {
             "Thebrightlabs\\IraqPayments\\": "src/",
-            "Thebrightlabs\\IraqPayments\\Seeders\\": "database/seeders/"
+            "App\\Services\\": "app/Services/"
         }
     },
     "authors": [

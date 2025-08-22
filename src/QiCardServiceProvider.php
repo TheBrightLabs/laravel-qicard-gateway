@@ -19,17 +19,18 @@ class QiCardServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        // load package config
+        // publishes
         $this->publishes([
             __DIR__ . '/../config/qi_card.php' => config_path('qi_card.php'),
         ], 'config');
-
-        // Allow publishing migrations to the main app
         $this->publishes([
             __DIR__ . '/../database/migrations/' => database_path('migrations'),
         ], 'migrations');
-
-        // Load package migrations
+        $this->publishes([
+            __DIR__.'/QiCardGateway.php' => app_path('Services/QiCardGateway.php'),
+        ], 'services');
+        // Load package things
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
     }
 }

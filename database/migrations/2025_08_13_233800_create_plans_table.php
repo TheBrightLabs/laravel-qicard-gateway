@@ -11,6 +11,11 @@ return new class extends Migration {
             $table->id();
             $table->text("description");
             $table->string('name');
+            $table->decimal("unit_count",5,3);
+            // unit count is using days to calculate end dates, when unit type is daily unit count is 1,
+            // means the end date will be 1 day after today, and same for any other which u must add the unit counts carefully
+            // for monthly keep it as 30, in the service we already check if the type is
+            // monthly and unit count is 30, means its monthly and we procced monthly based not only 30
             $table->string('slug')->unique();
             $table->string('type');
             $table->decimal('price', 12, 3);

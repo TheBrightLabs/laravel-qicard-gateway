@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->string('currency')->default('IQD');
             $table->string('gateway')->default('QiCard');
             $table->string('payment_method')->default('QICard');
-
             $table->string('invoice_id')->nullable();
             $table->string('invoice_url')->nullable();
             $table->string('payment_id')->nullable();
