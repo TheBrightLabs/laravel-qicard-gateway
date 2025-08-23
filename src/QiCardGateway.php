@@ -9,11 +9,13 @@ use Illuminate\Support\Str;
 use Thebrightlabs\IraqPayments\Models\Plan;
 use Thebrightlabs\IraqPayments\Models\Subscription;
 use Thebrightlabs\IraqPayments\Traits\withQiCardConfigs;
+use Thebrightlabs\IraqPayments\Traits\withQiCardHelpers;
 
 class QiCardGateway
 {
     // Bismillah.
-    use withQiCardConfigs,withQiCardHelpers;
+    use withQiCardConfigs, withQiCardHelpers;
+
     public function makeSubscription(array $data)
     {
         // prepare payload
@@ -117,10 +119,7 @@ class QiCardGateway
     {
         $ProccededSubscription = Subscription::where('payment_id', $result['paymentId'])->first();
         $choosenPlan = $subscription->plan;
-        // see if the plan is monthly
-        if ($choosenPlan->){
 
-        }
 
     }
 }
