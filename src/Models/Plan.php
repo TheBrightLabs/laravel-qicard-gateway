@@ -4,10 +4,11 @@ namespace Thebrightlabs\IraqPayments\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Thebrightlabs\IraqPayments\withQiCardHelpers;
 
 class Plan extends Model
 {
-    use HasFactory;
+    use HasFactory, withQiCardHelpers;
 
     protected $fillable = [
         'name',
@@ -31,6 +32,11 @@ class Plan extends Model
         return $this->hasMany(Subscription::class);
     }
 
+    public function isMonthly()
+    {
+        return $this->type == "monthly";
+    }
+
     protected function casts(): array
     {
         return [
@@ -39,4 +45,5 @@ class Plan extends Model
             "features" => "array"
         ];
     }
+
 }

@@ -2,6 +2,7 @@
 
 namespace Thebrightlabs\IraqPayments;
 
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -12,7 +13,7 @@ use Thebrightlabs\IraqPayments\Models\Subscription;
 class QiCardGateway
 {
     // Bismillah.
-    use withQiCardConfigs;
+    use withQicardHelpers, withQiCardConfigs;
 
     public function makeSubscription(array $data)
     {
@@ -29,11 +30,11 @@ class QiCardGateway
             'amount' => $plan->price,
             'currency' => $data['currency'] ?: "IQD",
             'gateway' => 'QiCard',
-            'payment_method' => 'QiCard',
+            'payment_method' => 'CARD',
             'payment_id' => $createdPayment['paymentId'],
             'invoice_id' => $createdPayment['requestId'],
             'invoice_url' => $createdPayment['formUrl'] ?? null,
-            'status' => $createdPayment['status'],
+            'status' => "pending",
             'gateway_response' => json_encode($createdPayment),
         ]);
 
@@ -115,8 +116,25 @@ class QiCardGateway
 
     public function handleSucceededPayment(array $result, Request $request)
     {
-        $ProccededSubscription = Subscription::where('payment_id', $result['paymentId'])->first();
-        $choosenPlan = $subscription->plan;
+        $proccededSubscription = Subscription::where('payment_id', $result['paymentId'])->first();
+        $choosenPlan = $proccededSubscription->plan;
+        if ($choosenPlan->isMonthly()) {
+            // then make the subscriotopn date updated from today to next month..
+            $today = Carbon::now();
+            $nextMonth = $today->copy()->addMonth();
+            // lets update the susbcription to be base don these dates.
+            $proccededSubscription->update([
+                "status" => "paid",
+                "start_date" => $today,
+                "end_date" => $nextMonth,
+                "gateway_response" => $result
+            ]);
+
+            return redirect()->route("client.payment")->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
+
+        } elseif ($choosenPlan->unit_count > 0) {
+         
+        }
 
 
     }
