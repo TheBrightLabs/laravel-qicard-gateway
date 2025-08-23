@@ -6,5 +6,4 @@ trait withQiCardHelpers
 {
 // Bismillah
 
-
 }
