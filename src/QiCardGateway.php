@@ -132,8 +132,31 @@ class QiCardGateway
 
             return redirect()->route("client.payment")->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
 
-        } elseif ($choosenPlan->unit_count > 0) {
-         
+        } else {
+            if ($choosenPlan->isLifeTime()) {
+                $today = Carbon::now();
+                $proccededSubscription->update([
+                    "status" => "paid",
+                    "start_date" => $today,
+                    "gateway_response" => $result
+                ]);
+
+                return redirect()->route("client.payment")->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
+
+            } else {
+                // means its not lifetime, we should keep the end date
+                $today = Carbon::now();
+                $dateToExpire = $today->copy()->addDays($choosenPlan->unit_count);
+                dd($dateToExpire);
+                $proccededSubscription->update([
+                    "status" => "paid",
+                    "start_date" => $today,
+                    "gateway_response" => $result
+                ]);
+
+                return redirect()->route("client.payment")->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
+
+            }
         }
 
 

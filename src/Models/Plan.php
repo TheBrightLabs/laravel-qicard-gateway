@@ -37,6 +37,11 @@ class Plan extends Model
         return $this->type == "monthly";
     }
 
+    public function isLifeTime()
+    {
+        return $this->type == "free" || $this->type == "one_time" || $this->unit_count == 0;
+    }
+
     protected function casts(): array
     {
         return [
