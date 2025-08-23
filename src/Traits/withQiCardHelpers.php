@@ -4,14 +4,7 @@ namespace Thebrightlabs\IraqPayments\Traits;
 
 trait withQiCardHelpers
 {
+// Bismillah
 
-    //Bismillah
-    protected $config;
-
-    public function __construct()
-    {
-        $this->config = config('qi_card');
-
-    }
 
 }
