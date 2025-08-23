@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Thebrightlabs\IraqPayments\Models\Plan;
 use Thebrightlabs\IraqPayments\Models\Subscription;
-use Thebrightlabs\IraqPayments\Traits\withQiCardConfigs;
 
 class QiCardGateway
 {
