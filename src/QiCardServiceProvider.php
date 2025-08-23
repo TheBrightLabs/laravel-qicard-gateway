@@ -3,6 +3,7 @@
 namespace Thebrightlabs\IraqPayments;
 
 use Illuminate\Support\ServiceProvider;
+
 class QiCardServiceProvider extends ServiceProvider
 {
 
@@ -12,7 +13,7 @@ class QiCardServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__ . '/../config/qi_card.php', 'qi_card'
         );
-        $this->app->singleton(QiCardGateway::class,function ($app){
+        $this->app->singleton(QiCardGateway::class, function ($app) {
             return new QiCardGateway();
         });
     }
