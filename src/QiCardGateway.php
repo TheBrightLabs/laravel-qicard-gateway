@@ -9,12 +9,11 @@ use Illuminate\Support\Str;
 use Thebrightlabs\IraqPayments\Models\Plan;
 use Thebrightlabs\IraqPayments\Models\Subscription;
 use Thebrightlabs\IraqPayments\Traits\withQiCardConfigs;
-use Thebrightlabs\IraqPayments\Traits\withQiCardHelpers;
 
 class QiCardGateway
 {
     // Bismillah.
-    use withQiCardConfigs, withQiCardHelpers;
+    use withQiCardConfigs;
 
     public function makeSubscription(array $data)
     {
