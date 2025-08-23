@@ -26,9 +26,6 @@ class QiCardServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../database/migrations/' => database_path('migrations'),
         ], 'migrations');
-        $this->publishes([
-            __DIR__.'/QiCardGateway.php' => app_path('Services/QiCardGateway.php'),
-        ], 'services');
         // Load package things
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');

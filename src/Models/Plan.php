@@ -4,7 +4,6 @@ namespace Thebrightlabs\IraqPayments\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Thebrightlabs\IraqPayments\Models\Subscription;
 
 class Plan extends Model
 {
@@ -19,15 +18,12 @@ class Plan extends Model
         'features',
         'is_active',
         'order',
+        'unit_count'
     ];
 
-    protected function casts(): array
+    public function getSubscriptionCountAttribute()
     {
-        return [
-            'price' => 'decimal:3',
-            'is_active' => 'boolean',
-            "features"=>"array"
-        ];
+        return $this->subscriptions()->count();
     }
 
     public function subscriptions()
@@ -35,8 +31,12 @@ class Plan extends Model
         return $this->hasMany(Subscription::class);
     }
 
-    public function getSubscriptionCountAttribute()
+    protected function casts(): array
     {
-        return $this->subscriptions()->count();
+        return [
+            'price' => 'decimal:3',
+            'is_active' => 'boolean',
+            "features" => "array"
+        ];
     }
 }

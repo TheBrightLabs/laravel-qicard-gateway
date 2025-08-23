@@ -13,8 +13,7 @@ use Thebrightlabs\IraqPayments\Traits\withQiCardConfigs;
 class QiCardGateway
 {
     // Bismillah.
-    use withQiCardConfigs;
-
+    use withQiCardConfigs,withQiCardHelpers;
     public function makeSubscription(array $data)
     {
         // prepare payload
@@ -116,6 +115,12 @@ class QiCardGateway
 
     public function handleSucceededPayment(array $result, Request $request)
     {
+        $ProccededSubscription = Subscription::where('payment_id', $result['paymentId'])->first();
+        $choosenPlan = $subscription->plan;
+        // see if the plan is monthly
+        if ($choosenPlan->){
+
+        }
 
     }
 }
