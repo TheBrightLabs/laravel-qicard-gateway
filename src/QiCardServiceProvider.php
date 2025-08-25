@@ -3,6 +3,7 @@
 namespace Thebrightlabs\IraqPayments;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Route;
 
 class QiCardServiceProvider extends ServiceProvider
 {
@@ -16,6 +17,7 @@ class QiCardServiceProvider extends ServiceProvider
         $this->app->singleton(QiCardGateway::class, function ($app) {
             return new QiCardGateway();
         });
+
     }
 
     public function boot()
@@ -30,5 +32,8 @@ class QiCardServiceProvider extends ServiceProvider
         // Load package things
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
+            $this->loadRoutesFrom(__DIR__.'/../routes/api.php');
+        });
     }
 }

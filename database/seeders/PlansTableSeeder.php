@@ -20,7 +20,7 @@ class PlansTableSeeder extends Seeder
                 'description' => 'Basic access suitable for individuals getting started.',
                 'features' => json_encode(['Basic features', '1 user', 'Email support']),
                 'is_active' => true,
-                'order' => 2, // alphabetical by name
+                'order' => 1, // alphabetical by name
                 'unit_count' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -33,7 +33,7 @@ class PlansTableSeeder extends Seeder
                 'description' => 'Access for 14 days with standard support.',
                 'features' => json_encode(['14-day access', 'All basic features', 'Standard support']),
                 'is_active' => true,
-                'order' => 1, // alphabetical by name
+                'order' => 2, // alphabetical by name
                 'unit_count' => 14,
                 'created_at' => now(),
                 'updated_at' => now(),
@@ -60,7 +60,7 @@ class PlansTableSeeder extends Seeder
                 'features' => json_encode(['All features', 'Yearly billing', 'Priority support']),
                 'is_active' => true,
                 'unit_count' => 365,
-                'order' => 5, // alphabetical by name
+                'order' => 4, // alphabetical by name
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -73,7 +73,7 @@ class PlansTableSeeder extends Seeder
                 'features' => json_encode(['All basic features', 'Lifetime access', 'Priority support']),
                 'is_active' => true,
                 'unit_count' => 0,
-                'order' => 4, // alphabetical by name
+                'order' => 5, // alphabetical by name
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

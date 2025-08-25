@@ -55,11 +55,10 @@ class QiCardGateway
             'description' => $data['description'] ?: "No Description.",
             'customerInfo' => $data["customerInfo"] ?: [],
             'finishPaymentUrl' => $data["finishPaymentUrl"] ?: route('payment.finish'),
-            'notificationUrl' => $data["notificationUrl"] ?: route('payment.finish'),
+            'notificationUrl' => $data["notificationUrl"] ?: route('payment.webhook'),
             'requestId' => $data["request_id"] ?: (string)Str::uuid(),
             'additionalInfo' => $data["additionalInfo"] ?: [],
         ];
-
         return $payload;
     }
 
@@ -84,12 +83,16 @@ class QiCardGateway
     {
         $subscription = Subscription::where('payment_id', $payemntId)->first();
         $result = $this->getPaymentResult($payemntId); // get the status
+        ray($result);
         // handle if payment succeed
         if (isset($result['status'])) {
-            if ($result['status'] == "SUCCESS") {
+            if ($result['status'] == "SUCCESS" && !$result["canceled"]) {
                 return $this->handleSucceededPayment($result, $request);
+            } else {
+                return $this->handleFailedPayment($result, $request);
             }
         } else {
+
             return redirect()->route('client.payment')
                 ->with("message", "Payment not found, please try again or contact support.")
                 ->with("type", "error");
@@ -146,11 +149,12 @@ class QiCardGateway
             } else {
                 // means its not lifetime, we should keep the end date
                 $today = Carbon::now();
-                $dateToExpire = $today->copy()->addDays($choosenPlan->unit_count);
-                dd($dateToExpire);
+                $daysToAdd = intval($choosenPlan->unit_count);
+                $dateToExpire = $today->copy()->addDays($daysToAdd);
                 $proccededSubscription->update([
                     "status" => "paid",
                     "start_date" => $today,
+                    "end_date" => $dateToExpire,
                     "gateway_response" => $result
                 ]);
 
@@ -160,5 +164,14 @@ class QiCardGateway
         }
 
 
+    }
+
+    public function handleFailedPayment(array $result, Request $request)
+    {
+        $proccededSubscription = Subscription::where('payment_id', $result['paymentId'])->first();
+        $proccededSubscription->update([
+            "status" => "cancelled",
+            "gateway_response" => $result
+        ]);
     }
 }
