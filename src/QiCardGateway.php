@@ -4,7 +4,6 @@ namespace Thebrightlabs\IraqPayments;
 
 use Carbon\Carbon;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Thebrightlabs\IraqPayments\Models\Plan;
@@ -79,16 +78,26 @@ class QiCardGateway
 
     }
 
-    public function handleFinishedPayment(string $payemntId, Request $request)
+    public function handleFinishedPayment(string $payemntId, $request = null)
     {
         $subscription = Subscription::where('payment_id', $payemntId)->first();
         $result = $this->getPaymentResult($payemntId); // get the status
-        ray($result);
+        // check if its a request (not shcedulers will be checked)
+        if ($request) {
+            // check if its from qi card
+            if ($request->input('status') != $result['status']) {
+                // if not from qi card return null
+                return null;
+            }
+        }
+
         // handle if payment succeed
         if (isset($result['status'])) {
+            // if new status is success and not canceled
             if ($result['status'] == "SUCCESS" && !$result["canceled"]) {
                 return $this->handleSucceededPayment($result, $request);
             } else {
+                // if not success, means its failed or still in pending mark it as failed..
                 return $this->handleFailedPayment($result, $request);
             }
         } else {
@@ -117,7 +126,7 @@ class QiCardGateway
         return $response->json();
     }
 
-    public function handleSucceededPayment(array $result, Request $request)
+    public function handleSucceededPayment(array $result, $request = null)
     {
         $proccededSubscription = Subscription::where('payment_id', $result['paymentId'])->first();
         $choosenPlan = $proccededSubscription->plan;
@@ -141,7 +150,7 @@ class QiCardGateway
                 $proccededSubscription->update([
                     "status" => "paid",
                     "start_date" => $today,
-                    "gateway_response" => $result
+                    "gateway_response" => $result,
                 ]);
 
                 return redirect()->route("client.payment")->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
@@ -166,11 +175,12 @@ class QiCardGateway
 
     }
 
-    public function handleFailedPayment(array $result, Request $request)
+    public function handleFailedPayment(array $result, $request = null)
     {
         $proccededSubscription = Subscription::where('payment_id', $result['paymentId'])->first();
         $proccededSubscription->update([
             "status" => "cancelled",
+            "checked" => true,
             "gateway_response" => $result
         ]);
     }
