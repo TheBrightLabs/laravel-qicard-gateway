@@ -135,6 +135,8 @@ Route::get('/payment/plan/{id}', function ($planId) {
 - Only if the status matches, the subscription is marked as `paid` or `cancelled`.
 - If the webhook is suspicious or doesn’t match, it is ignored.
 
+![Logo](https://i.postimg.cc/mgCgnQ7K/Screenshot-2025-08-25-at-5-54-29-PM.png)
+
 ---
 
 ## Automatic Pending Subscription Cleanup
