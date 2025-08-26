@@ -1,3 +1,6 @@
+
+![Logo](https://i.postimg.cc/HWFHCrWm/qicard.jpg)
+
 # Laravel QiCard Gateway
 
 A simple, secure Laravel package for integrating the Qi Card payment gateway in your application.  
