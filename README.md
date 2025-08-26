@@ -70,7 +70,7 @@ QI_CARD_PASSWORD=your_production_password
 QI_CARD_TERMINAL_ID=your_production_terminal_id
 
 QI_FINISH_PAYMENT_URL=https://your-app.com/payment/finish
-QI_NOTIFICATION_URL=https://your-app.com/qi-card/webhook
+QI_NOTIFICATION_URL=https://your-app.com/qi-card/webhook (we recommend you to keep this as the package route, because we already have handled the secuirty things.)
 ```
 
 ---
