@@ -3,8 +3,8 @@
 namespace TheBrightLabs\QiCard\Console\Commands;
 
 use Illuminate\Console\Command;
-use Thebrightlabs\IraqPayments\Models\Subscription;
-use Thebrightlabs\IraqPayments\QiCardGateway;
+use Thebrightlabs\QiCard\Models\Subscription;
+use Thebrightlabs\QiCard\QiCardGateway;
 
 class CheckPaymentStatuses extends Command
 {
