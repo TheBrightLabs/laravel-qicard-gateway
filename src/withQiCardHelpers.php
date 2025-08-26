@@ -1,9 +1,9 @@
 <?php
 
-namespace Thebrightlabs\IraqPayments;
+namespace Thebrightlabs\QiCard;
 
 use Illuminate\Support\Str;
-use Thebrightlabs\IraqPayments\Models\Subscription;
+use Thebrightlabs\QiCard\Models\Subscription;
 
 trait withQiCardHelpers
 {

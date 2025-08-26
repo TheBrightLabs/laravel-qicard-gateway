@@ -1,6 +1,6 @@
 <?php
 
-namespace Thebrightlabs\IraqPayments;
+namespace Thebrightlabs\QiCard;
 
 trait withQiCardConfigs
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace TheBrightLabs\IraqPayments\Console\Commands;
+namespace TheBrightLabs\QiCard\Console\Commands;
 
 use Illuminate\Console\Command;
 use Thebrightlabs\IraqPayments\Models\Subscription;

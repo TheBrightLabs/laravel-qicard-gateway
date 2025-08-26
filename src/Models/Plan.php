@@ -1,10 +1,10 @@
 <?php
 
-namespace Thebrightlabs\IraqPayments\Models;
+namespace Thebrightlabs\QiCard\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Thebrightlabs\IraqPayments\withQiCardHelpers;
+use Thebrightlabs\QiCard\withQiCardHelpers;
 
 class Plan extends Model
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace Thebrightlabs\IraqPayments;
+namespace Thebrightlabs\QiCard;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use TheBrightLabs\IraqPayments\Console\Commands\CheckPaymentStatuses;
+use TheBrightLabs\QiCard\Console\Commands\CheckPaymentStatuses;
 
 class QiCardServiceProvider extends ServiceProvider
 {

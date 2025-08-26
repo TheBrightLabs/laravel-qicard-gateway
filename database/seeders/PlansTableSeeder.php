@@ -1,6 +1,6 @@
 <?php
 
-namespace Thebrightlabs\IraqPayments\Seeders;
+namespace Thebrightlabs\QiCard\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;

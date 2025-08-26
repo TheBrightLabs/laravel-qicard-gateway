@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Thebrightlabs\IraqPayments\QiCardGateway;
+use Thebrightlabs\QiCard\QiCardGateway;
 
 Route::post('qi-card/webhook', function (Request $request) {
     $paymentId = $request->input('paymentId');

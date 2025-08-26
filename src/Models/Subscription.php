@@ -1,6 +1,6 @@
 <?php
 
-namespace Thebrightlabs\IraqPayments\Models;
+namespace Thebrightlabs\QiCard\Models;
 
 
 use App\Models\User;

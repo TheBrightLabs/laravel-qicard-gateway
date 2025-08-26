@@ -1,26 +1,35 @@
 {
     "name": "thebrightlabs/laravel-qicard-gateway",
-    "description": "Laravel package for QI Card and other Iraqi payment gateways",
+    "description": "Laravel package for Qi Card payment gateway integration",
+    "keywords": ["laravel", "payment", "gateway", "qicard", "iraq"],
+    "homepage": "https://github.com/TheBrightLabs/laravel-qicard-gateway",
+    "version": "1.0.0",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Thebrightlabs\\IraqPayments\\": "src/",
-            "Thebrightlabs\\IraqPayments\\Seeders\\": "database/seeders/"
+            "Thebrightlabs\\QiCard\\": "src/",
+            "Thebrightlabs\\QiCard\\Seeders\\": "database/seeders/"
         }
     },
     "authors": [
         {
             "name": "00bx",
-            "email": "zamanagha68@gmail.com"
+            "email": "zamanagha68@gmail.com",
+            "homepage": "https://thebrightlabs.co",
+            "role": "Developer"
         }
     ],
-    "minimum-stability": "stable",
-    "require": {},
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "^8.1",
+        "guzzlehttp/guzzle": "^7.0"
+    },
     "extra": {
         "laravel": {
             "providers": [
-                "Thebrightlabs\\IraqPayments\\QiCardServiceProvider"
+                "Thebrightlabs\\QiCard\\QiCardServiceProvider"
             ]
         }
     }
