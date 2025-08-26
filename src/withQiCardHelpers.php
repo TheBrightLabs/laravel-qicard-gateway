@@ -14,10 +14,10 @@ trait withQiCardHelpers
             'amount' => $data['amount'],
             'currency' => $data['currency'] ?: 'IQD',
             'locale' => $data['locale'] ?: "US",
-            'description' => $data['description'] ?: "No Description.",
+            'description' => $data['description'] ?: "",
             'customerInfo' => $data["customerInfo"] ?: [],
             'finishPaymentUrl' => route(config('qi_card.finishPaymentUrl')),
-            'notificationUrl' => route('payment.webhook'),
+            'notificationUrl' => route(config('qi_card.notificationUrl')),
             'requestId' => $data["request_id"] ?: (string)Str::uuid(),
             'additionalInfo' => $data["additionalInfo"] ?: [],
         ];

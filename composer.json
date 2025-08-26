@@ -1,5 +1,5 @@
 {
-    "name": "thebrightlabs/iraq-payments",
+    "name": "thebrightlabs/laravel-qicard-gateway",
     "description": "Laravel package for QI Card and other Iraqi payment gateways",
     "type": "library",
     "license": "MIT",

@@ -2,7 +2,8 @@
 
 return [
     'mode' => env('QI_CARD_MODE', 'sandbox'),
-    "finishPaymentUrl" => env('FINISHPAYMENTURL', "payment.finish-test"),
+    "finishPaymentUrl" => env('QI_FINISH_PAYMENT_URL', "payment.finish-test"),
+    "notificationUrl" => env('QI_NOTIFICATION_URL', "payment.webhook"),
     'sandbox' => [
         'api_host' => 'https://uat-sandbox-3ds-api.qi.iq/api/v1',
         'username' => 'paymentgatewaytest',
