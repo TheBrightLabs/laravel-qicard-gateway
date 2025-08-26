@@ -30,6 +30,12 @@ class QiCardServiceProvider extends ServiceProvider
                 CheckPaymentStatuses::class,
             ]);
         }
+        // Load package things
+        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
+            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
+        });
         // publishes
         $this->publishes([
             __DIR__ . '/../config/qi_card.php' => config_path('qi_card.php'),
@@ -37,11 +43,6 @@ class QiCardServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../database/migrations/' => database_path('migrations'),
         ], 'migrations');
-        // Load package things
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
-        Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
-            $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
-        });
+
     }
 }

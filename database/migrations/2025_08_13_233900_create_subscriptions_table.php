@@ -15,7 +15,7 @@ return new class extends Migration {
                 ->cascadeOnDelete();
             $table->foreignId('plan_id')
                 ->constrained('plans');
-            $table->decimal('amount', 12, 3);
+            $table->decimal('amount', 10, 2);
             $table->string('currency')->default('IQD');
             $table->string('gateway')->default('QiCard');
             $table->string('payment_method')->default('QICard');
@@ -29,7 +29,7 @@ return new class extends Migration {
 
             $table->timestamps();
 
-            $table->index(['user_id', 'plan_id']);
+            $table->index(['payment_id', 'user_id', 'plan_id']);
             $table->index('status');
         });
     }

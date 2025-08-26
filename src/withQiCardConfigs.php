@@ -38,4 +38,11 @@ trait withQiCardConfigs
         $mode = $this->config['mode'];
         return $this->config[$mode]['api_host'];
     }
+
+    public function getFinishPaymentUrl()
+    {
+        return $this->config['finishPaymentUrl'];
+    }
+
+
 }

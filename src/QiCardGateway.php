@@ -5,7 +5,6 @@ namespace Thebrightlabs\IraqPayments;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 use Thebrightlabs\IraqPayments\Models\Plan;
 use Thebrightlabs\IraqPayments\Models\Subscription;
 
@@ -14,13 +13,12 @@ class QiCardGateway
     // Bismillah.
     use withQicardHelpers, withQiCardConfigs;
 
-    public function makeSubscription(array $data)
+    public function makeSubscription(array $data , Plan $plan)
     {
         // prepare payload
         // make payment
         // make susbcription for the created payment
         $user = auth()->user();
-        $plan = Plan::find($data['plan_id']);
         $payload = $this->preparePayload($data);
         $createdPayment = $this->makePayment($payload);
         $subscription = Subscription::create([
@@ -37,28 +35,7 @@ class QiCardGateway
             'gateway_response' => json_encode($createdPayment),
         ]);
 
-        if ($subscription) {
             return redirect()->to($subscription->invoice_url);
-        } else {
-            throw new Exception('Failed to create subscription');
-        }
-
-    }
-
-    public function preparePayload($data)
-    {
-        $payload = [
-            'amount' => $data['amount'],
-            'currency' => $data['currency'] ?: 'IQD',
-            'locale' => $data['locale'] ?: "US",
-            'description' => $data['description'] ?: "No Description.",
-            'customerInfo' => $data["customerInfo"] ?: [],
-            'finishPaymentUrl' => $data["finishPaymentUrl"] ?: route('payment.finish'),
-            'notificationUrl' => $data["notificationUrl"] ?: route('payment.webhook'),
-            'requestId' => $data["request_id"] ?: (string)Str::uuid(),
-            'additionalInfo' => $data["additionalInfo"] ?: [],
-        ];
-        return $payload;
     }
 
     public function makePayment($payload)
@@ -102,7 +79,7 @@ class QiCardGateway
             }
         } else {
 
-            return redirect()->route('client.payment')
+            return redirect()->route($this->getFinishPaymentUrl())
                 ->with("message", "Payment not found, please try again or contact support.")
                 ->with("type", "error");
         }
@@ -139,10 +116,10 @@ class QiCardGateway
                 "status" => "paid",
                 "start_date" => $today,
                 "end_date" => $nextMonth,
-                "gateway_response" => $result
+                "gateway_response" => json_encode($result)
             ]);
 
-            return redirect()->route("client.payment")->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
+            return redirect()->route($this->getFinishPaymentUrl())->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
 
         } else {
             if ($choosenPlan->isLifeTime()) {
@@ -150,10 +127,10 @@ class QiCardGateway
                 $proccededSubscription->update([
                     "status" => "paid",
                     "start_date" => $today,
-                    "gateway_response" => $result,
+                    "gateway_response" => json_encode($result),
                 ]);
 
-                return redirect()->route("client.payment")->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
+                return redirect()->route($this->getFinishPaymentUrl())->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
 
             } else {
                 // means its not lifetime, we should keep the end date
@@ -164,10 +141,10 @@ class QiCardGateway
                     "status" => "paid",
                     "start_date" => $today,
                     "end_date" => $dateToExpire,
-                    "gateway_response" => $result
+                    "gateway_response" => json_encode($result)
                 ]);
 
-                return redirect()->route("client.payment")->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
+                return redirect()->route($this->getFinishPaymentUrl())->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
 
             }
         }
@@ -180,8 +157,15 @@ class QiCardGateway
         $proccededSubscription = Subscription::where('payment_id', $result['paymentId'])->first();
         $proccededSubscription->update([
             "status" => "cancelled",
-            "checked" => true,
-            "gateway_response" => $result
+            "gateway_response" => json_encode($result),
         ]);
+
+        if ($request) {
+            return redirect()->route($this->getFinishPaymentUrl())
+                ->with("message", "Payment not Procceded, please try again or contact support.")
+                ->with("type", "error");
+
+        }
+
     }
 }

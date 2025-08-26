@@ -11,7 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->text("description");
             $table->string('name');
-            $table->decimal("unit_count",6,3);
+            $table->decimal("unit_count", 6, 3);
             // unit count is using days to calculate end dates, when unit type is daily unit count is 1,
             // means the end date will be 1 day after today, and same for any other which u must add the unit counts carefully
             // for monthly keep it as 30, in the service we already check if the type is
@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->boolean('is_active')->default(true);
             $table->integer('order')->default(0);
             $table->timestamps();
+
         });
     }
 
