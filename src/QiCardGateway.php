@@ -5,8 +5,8 @@ namespace Thebrightlabs\QiCard;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Http;
-use Thebrightlabs\IraqPayments\Models\Plan;
-use Thebrightlabs\IraqPayments\Models\Subscription;
+use Thebrightlabs\QiCard\Models\Plan;
+use Thebrightlabs\QiCard\Models\Subscription;
 
 class QiCardGateway
 {
