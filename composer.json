@@ -3,7 +3,6 @@
     "description": "Laravel package for Qi Card payment gateway integration",
     "keywords": ["laravel", "payment", "gateway", "qicard", "iraq"],
     "homepage": "https://github.com/TheBrightLabs/laravel-qicard-gateway",
-    "version": "1.0.0",
     "type": "library",
     "license": "MIT",
     "autoload": {
