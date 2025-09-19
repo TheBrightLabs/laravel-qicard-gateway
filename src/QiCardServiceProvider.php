@@ -5,6 +5,7 @@ namespace Thebrightlabs\QiCard;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use TheBrightLabs\QiCard\Console\Commands\CheckPaymentStatuses;
+use TheBrightLabs\QiCard\Console\Commands\CheckSubscriptionExpiration;
 
 class QiCardServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,7 @@ class QiCardServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 CheckPaymentStatuses::class,
+                CheckSubscriptionExpiration::class
             ]);
         }
         // Load package things
