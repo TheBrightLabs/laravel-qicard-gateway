@@ -37,9 +37,21 @@ class Plan extends Model
         return $this->type == "monthly";
     }
 
+    /**
+     * Check if the plan is a lifetime plan (no expiration).
+     *
+     * A plan is considered lifetime if:
+     * 1. It's a one-time payment plan (type = "one_time")
+     * 2. OR it has zero duration (unit_count = 0) and requires payment (price > 0)
+     *
+     * Note: Free plans (price = 0) are NOT considered lifetime since they
+     * are handled separately and don't go through payment flow.
+     *
+     * @return bool
+     */
     public function isLifeTime()
     {
-        return $this->type == "free" || $this->type == "one_time" || $this->unit_count == 0;
+        return  $this->type == "one_time" || ($this->unit_count == 0 && (int)$this->price > 0);
     }
 
     protected function casts(): array

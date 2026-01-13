@@ -4,7 +4,10 @@ namespace Thebrightlabs\QiCard;
 
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
+use Thebrightlabs\QiCard\Events\PaymentSucceededAfter;
+use Thebrightlabs\QiCard\Events\PaymentSucceededBefore;
 use Thebrightlabs\QiCard\Models\Plan;
 use Thebrightlabs\QiCard\Models\Subscription;
 
@@ -106,6 +109,8 @@ class QiCardGateway
     public function handleSucceededPayment(array $result, $request = null)
     {
         $proccededSubscription = Subscription::where('payment_id', $result['paymentId'])->first();
+        Event::dispatch(new PaymentSucceededBefore($result, $proccededSubscription, $request));
+
         $choosenPlan = $proccededSubscription->plan;
         if ($choosenPlan->isMonthly()) {
             // then make the subscriotopn date updated from today to next month..
@@ -119,7 +124,6 @@ class QiCardGateway
                 "gateway_response" => json_encode($result)
             ]);
 
-            return redirect()->route($this->getFinishPaymentUrl())->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
 
         } else {
             if ($choosenPlan->isLifeTime()) {
@@ -129,8 +133,6 @@ class QiCardGateway
                     "start_date" => $today,
                     "gateway_response" => json_encode($result),
                 ]);
-
-                return redirect()->route($this->getFinishPaymentUrl())->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
 
             } else {
                 // means its not lifetime, we should keep the end date
@@ -144,12 +146,15 @@ class QiCardGateway
                     "gateway_response" => json_encode($result)
                 ]);
 
-                return redirect()->route($this->getFinishPaymentUrl())->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
 
             }
         }
 
+        // AFTER EVENT - for additional logic after package processing
+        Event::dispatch(new PaymentSucceededAfter($result, $proccededSubscription, $request));
 
+
+        return redirect()->route($this->getFinishPaymentUrl())->with("message", "Payment succeeded, your subscription is now active.")->with("type", "success");
     }
 
     public function handleFailedPayment(array $result, $request = null)

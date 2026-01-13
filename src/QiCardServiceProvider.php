@@ -33,7 +33,7 @@ class QiCardServiceProvider extends ServiceProvider
             ]);
         }
         // Load package things
-        $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+       // $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         Route::group(['prefix' => 'api', 'middleware' => 'api'], function () {
             $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
