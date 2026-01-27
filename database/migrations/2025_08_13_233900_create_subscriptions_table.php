@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->timestamp('end_date')->nullable();
             $table->string('status')->default('pending');
             $table->json('gateway_response')->nullable();
-
+            $table->unsignedInteger('grace_period_days')->default(3);
             $table->timestamps();
 
             $table->index(['payment_id', 'user_id', 'plan_id']);
