@@ -11,42 +11,57 @@ use Thebrightlabs\QiCard\Models\Plan;
 trait WithSubscriptionConfigs
 {
 
+    private $cachedActiveSubscription = null;
+
     public function hasActiveSubscription()
     {
         return $this->subscriptions()
             ->where('status', 'paid')
             ->where(function ($q) {
                 $q->where('end_date', '>', now())
-                    ->orWhereNull('end_date');
+                    ->orWhereNull('end_date')
+                    ->orWhereRaw('DATE_ADD(end_date, INTERVAL COALESCE(grace_period_days, 3) DAY) >= NOW()');
             })
             ->exists();
     }
 
     public function activeSubscription()
     {
-        return $this->subscriptions()
-            ->where('status', SubscriptionStatuses::PAID->value)
-            ->where(function (Builder $query) {
-                // do and operation
-                $query->where('end_date', '>', now())
-                    ->orWhereNull('end_date'); // means its paid one time
-            })
-            ->latest('end_date')
-            ->first();
+        if ($this->cachedActiveSubscription == null) {
+            $this->cachedActiveSubscription = $this->subscriptions()
+                ->where('status', SubscriptionStatuses::PAID->value)
+                ->where(function (Builder $query) {
+                    // do and operation
+                    $query->where('end_date', '>', now())
+                        ->orWhereNull('end_date') // means its paid one time
+                        ->orWhereRaw('DATE_ADD(end_date, INTERVAL COALESCE(grace_period_days, 3) DAY) >= NOW()');
+                    // in grace period
+
+                })
+                ->latest('end_date')
+                ->first();
+        }
+        return $this->cachedActiveSubscription;
     }
 
 
     public function activePlan()
     {
-        if ($this->activeSubscription()){
+        if ($this->activeSubscription()) {
             return $this->activeSubscription()->plan;
         }
-        return Plan::where('tier_id',Tiers::DEMO->value)->first();
+        return Plan::where('tier_id', Tiers::DEMO->value)->first();
     }
 
     public function hasOneTimePaymentPlan()
     {
         return $this->activePlan()?->unit_count == 0;
     }
+
+    public function isSubscriptionExpired()
+    {
+        return !$this->hasActiveSubscription();
+    }
+
 
 }
