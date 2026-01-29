@@ -16,7 +16,7 @@ class QiCardGateway
     // Bismillah.
     use withQiCardHelpers, withQiCardConfigs;
 
-    public function makeSubscription(array $data , Plan $plan)
+    public function makeSubscription(array $data, Plan $plan)
     {
         // prepare payload
         // make payment
@@ -38,7 +38,7 @@ class QiCardGateway
             'gateway_response' => json_encode($createdPayment),
         ]);
 
-            return redirect()->to($subscription->invoice_url);
+        return redirect()->to($subscription->invoice_url);
     }
 
     public function makePayment($payload)
@@ -62,6 +62,15 @@ class QiCardGateway
     {
         $subscription = Subscription::where('payment_id', $payemntId)->first();
         $result = $this->getPaymentResult($payemntId); // get the status
+
+        // Check if result has status
+        if (!isset($result['status'])) {
+            return redirect()->route($this->getFinishPaymentUrl())
+                ->with('message', 'Payment not found, please try again or contact support.')
+                ->with('type', 'error');
+        }
+
+
         // check if its a request (not shcedulers will be checked)
         if ($request) {
             // check if its from qi card
@@ -71,8 +80,7 @@ class QiCardGateway
             }
         }
 
-        // handle if payment succeed
-        if (isset($result['status'])) {
+              // handle if payment succeed
             // if new status is success and not canceled
             if ($result['status'] == "SUCCESS" && !$result["canceled"]) {
                 return $this->handleSucceededPayment($result, $request);
@@ -80,12 +88,6 @@ class QiCardGateway
                 // if not success, means its failed or still in pending mark it as failed..
                 return $this->handleFailedPayment($result, $request);
             }
-        } else {
-
-            return redirect()->route($this->getFinishPaymentUrl())
-                ->with("message", "Payment not found, please try again or contact support.")
-                ->with("type", "error");
-        }
 
     }
 
