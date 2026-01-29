@@ -14,7 +14,7 @@ use Thebrightlabs\QiCard\Models\Subscription;
 class QiCardGateway
 {
     // Bismillah.
-    use withQicardHelpers, withQiCardConfigs;
+    use withQiCardHelpers, withQiCardConfigs;
 
     public function makeSubscription(array $data , Plan $plan)
     {
