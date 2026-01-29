@@ -4,8 +4,8 @@ namespace Thebrightlabs\QiCard;
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use TheBrightLabs\QiCard\Console\Commands\CheckPaymentStatuses;
-use TheBrightLabs\QiCard\Console\Commands\CheckSubscriptionExpiration;
+use Thebrightlabs\QiCard\Console\Commands\CheckPaymentStatuses;
+use Thebrightlabs\QiCard\Console\Commands\CheckSubscriptionExpiration;
 
 class QiCardServiceProvider extends ServiceProvider
 {

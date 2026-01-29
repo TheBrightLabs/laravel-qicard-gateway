@@ -1,6 +1,6 @@
 <?php
 
-namespace TheBrightLabs\QiCard\Console\Commands;
+namespace Thebrightlabs\QiCard\Console\Commands;
 
 use Illuminate\Console\Command;
 use Thebrightlabs\QiCard\Models\Subscription;
