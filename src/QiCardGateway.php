@@ -48,12 +48,22 @@ class QiCardGateway
         $password = $this->getPassword();
         $terminalId = $this->getTerminalId();
 
+        // TODO 1: Log payload to verify webhook URL is sent
+        \Log::info('QiCard Payment Request', [
+            'payload' => $payload,
+            'notificationUrl' => $payload['notificationUrl'] ?? 'NOT SET'
+        ]);
+
         $response = Http::withBasicAuth($username, $password)
             ->withHeaders([
                 'X-Terminal-Id' => $terminalId,
                 'Accept' => 'application/json',
             ])
             ->post($apiHost . '/payment', $payload);
+        
+        // TODO 2: Log response to see if QiCard accepted webhook URL
+        \Log::info('QiCard Payment Response', ['response' => $response->json()]);
+        
         return $response->json();
 
     }
