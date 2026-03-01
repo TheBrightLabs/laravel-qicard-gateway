@@ -62,6 +62,9 @@ trait WithSubscriptionConfigs
     {
         return !$this->hasActiveSubscription();
     }
-
-
+    
+    public function hasNoSubscriptions()
+    {
+        return !$this->subscriptions()->exists();
+    }
 }
